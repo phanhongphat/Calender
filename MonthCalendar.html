@@ -2,20 +2,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>MonthCalendar.html &copy; Kari Laitinen</title>
-<!-- 
-   2016-02-02 File created for http://www.naturalprogramming.com/
-   2016-10-21 New JavaScript (ECMAScript 6) class in use.
-   2018-04-24 Grayish body.
+<title>MonthCalendar</title>
 
-   This page demonstrates:
-      - using standard and 'self-made' Date methods
-      - creating a <table> element with JavaScript
-      - styling the <table> with CSS definitions
-      - defining a JavaScript class named EnglishCalendar
-      - defining subclasses for a JavaScript class (in comments)
-
--->
 
 <style>
 
@@ -303,6 +291,87 @@ class EnglishCalendar
 
 } // END OF EnglishCalendar DECLARATIONS
 calendar_to_show = new EnglishCalendar;
+class SpanishCalendar extends EnglishCalendar
+{
+   constructor( given_year, given_month )
+   {
+      // calling the superclass constructor
+      super( given_year, given_month ) ;
+
+      var spanish_names_of_months  =
+
+         [ "Enero", "Febrero", "Marzo", "Abril",
+           "Mayo", "Junio", "Julio", "Agosto",
+           "Septiembre", "Octubre", "Noviembre", "Diciembre" ] ;
+
+      var spanish_week_description  =
+
+         [ "Sem",  "Lun",  "Mar",  "Mie",  "Jue",  "Vie",  "Sab",  "Dom" ] ;
+
+      this.names_of_months   =  spanish_names_of_months ;
+      this.week_description  =  spanish_week_description ;
+   }
+} // END OF SpanishCalendar DECLARATION
+
+// Next we specify a subclass named GermanCalendar
+
+class GermanCalendar extends EnglishCalendar
+{
+   constructor( given_year, given_month )
+   {
+      // calling the superclass constructor
+      super( given_year, given_month ) ;
+
+      var german_names_of_months  =
+
+         [ "Januar", "Februar", "Marz", "April",
+           "Mai", "Juni", "Juli", "August",
+           "September", "Oktober", "November", "Dezember" ] ;
+
+      var german_week_description  =
+
+         [ "Whe",  "Mon",  "Die",  "Mit",  "Don",  "Fre",  "Sam",  "Son" ] ;
+
+      this.names_of_months   =  german_names_of_months ;
+      this.week_description  =  german_week_description ;
+   }
+}
+
+
+// The EnglishCalendar object that we create here will show the current
+// month, according to the computer time settings.
+var calendar_to_show = new EnglishCalendar() ;
+var calendar_to_show = new SpanishCalendar() ;
+var calendar_to_show = new GermanCalendar() ;
+var calendar_language = "English" ;
+
+function change_language()
+{
+ if ( calendar_language == "English" )
+   {
+      calendar_to_show = new SpanishCalendar( calendar_to_show.get_year(),
+                                              calendar_to_show.get_month() ) ;
+
+      calendar_language = "Spanish" ;
+   }
+   else if ( calendar_language == "Spanish" )
+   {
+      calendar_to_show = new GermanCalendar( calendar_to_show.get_year(),
+                                             calendar_to_show.get_month() ) ;
+
+      calendar_language = "German" ;
+   }
+   else
+   {
+      calendar_to_show = new EnglishCalendar( calendar_to_show.get_year(),
+                                              calendar_to_show.get_month() ) ;
+
+      calendar_language = "English" ;
+   }
+
+ var div_for_calendar = document.getElementById( "calendar_div_id" ) ;
+ div_for_calendar.innerHTML = calendar_to_show.to_table_element() ;
+}
 
 function show_previous_month_calendar()
 {
@@ -373,7 +442,7 @@ function calendar_day_clicked( td_element )
    <div id=calendar_area>
 
       <div id=relatively_positioned_buttons>
-
+		 <button onclick="change_language()">L</button>	
          <button onclick="show_previous_month_calendar()">&lt;</button>
          <button onclick="show_next_month_calendar()">&gt;</button>
 		 <button onclick="show_previous_year()">--</button>
